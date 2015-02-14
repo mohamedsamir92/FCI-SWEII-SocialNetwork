@@ -39,6 +39,15 @@ import com.FCI.SWE.Models.UserEntity;
 @Path("/")
 @Produces("text/html")
 public class Service {
+	
+	
+	/*@GET
+	@Path("/index")
+	public Response index() {
+		return Response.ok(new Viewable("/jsp/entryPoint")).build();
+	}*/
+
+
 		/**
 	 * Registration Rest service, this service will be called to make
 	 * registration. This function will store user data in data store
