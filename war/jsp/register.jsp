@@ -8,7 +8,7 @@
   <title>Welcome!</title>
 </head>
 <body>
-  <form action="/rest/response" method="post">
+  <form action="/social/response" method="post">
   Name : <input type="text" name="uname" /> <br>
   Email : <input type="text" name="email" /> <br>
   Password : <input type="password" name="password" /> <br>

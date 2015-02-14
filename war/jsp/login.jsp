@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="/rest/home" method="post">
+<form action="/social/home" method="post">
   Name : <input type="text" name="uname" /> <br>
   Password : <input type="password" name="password" /> <br>
   <input type="submit" value="Login">

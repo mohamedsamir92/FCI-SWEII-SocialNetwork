@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href="/rest/signup/">Sign up</a> <br>
-<a href="/rest/login/">Login</a> <br>
+<a href="/social/signup/">Sign up</a> <br>
+<a href="/social/login/">Login</a> <br>
 </body>
 </html>
