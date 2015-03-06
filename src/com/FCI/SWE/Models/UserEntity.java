@@ -16,6 +16,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.googlecode.objectify.ObjectifyService;
 
 /**
@@ -141,7 +142,7 @@ public class UserEntity {
 	
 	public static void sendFriendRequest(String u1, String u2){
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		Entity request = new Entity("friendRequests" , u1+"&"+u2 );
+		Entity request = new Entity("friendRequests");
 		request.setProperty("sender", u1);
 		request.setProperty("receiver", u2);
 		datastore.put(request);
@@ -149,22 +150,21 @@ public class UserEntity {
 	
 	public static void acceptFriendRequest(String u1, String u2){
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		Entity a = new Entity("friends" , "hopa");
-		a.setProperty("friend", "aaa");
+		Entity a = new Entity("friends");
+		a.setProperty("u1", u1);
+		a.setProperty("u2", u2);
 		datastore.put(a);
-
-		Entity b = new Entity("friends" , "hala");
-		b.setProperty("friend", "ahmed");
-		datastore.put(b);
-
-		
-		Query gaeQuery = new Query("friends(\"hala\")");
-		PreparedQuery pq = datastore.prepare(gaeQuery);
-		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
-		for(int i = 0 ; i < list.size(); i++){
-			System.out.println(list.get(i));
-		}
-
 	}
 	
+//	public static void search(String u1){
+//		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+//		Filter f = new FilterPredicate("u1",FilterOperator.EQUAL,u1);
+//		Query q = new Query("friends").setFilter(f);
+//		
+//		PreparedQuery res = datastore.prepare(q);
+//		
+//		Entity e = res.asSingleEntity();
+//		System.out.println(e.toString());
+//
+//	}
 }

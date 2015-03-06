@@ -107,11 +107,12 @@ public class Service {
 		UserEntity.sendFriendRequest(user_one,user_two);
 	}
 	
-	@GET
+	@POST
 	@Path("/AcceptFriendRequest/{user_one}&{user_two}")
 	public void acceptFriendRequest(@PathParam("user_one")String user_one,
 									@PathParam("user_two")String user_two){
 		UserEntity.acceptFriendRequest(user_one,user_two);
 	}
-
+	
+	
 }
