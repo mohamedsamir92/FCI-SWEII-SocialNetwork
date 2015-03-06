@@ -1,5 +1,6 @@
 package com.FCI.SWE.Models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.googlecode.objectify.ObjectifyService;
 
 /**
@@ -142,7 +145,7 @@ public class UserEntity {
 	
 	public static void sendFriendRequest(String u1, String u2){
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		Entity request = new Entity("friendRequests");
+		Entity request = new Entity("friendRequests",u1+"&"+u2);
 		request.setProperty("sender", u1);
 		request.setProperty("receiver", u2);
 		datastore.put(request);
@@ -150,10 +153,20 @@ public class UserEntity {
 	
 	public static void acceptFriendRequest(String u1, String u2){
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		Entity a = new Entity("friends");
+		Entity a = new Entity("friends",u1+"&"+u2);
 		a.setProperty("u1", u1);
 		a.setProperty("u2", u2);
 		datastore.put(a);
+		
+		Filter f1 = new FilterPredicate("sender",FilterOperator.EQUAL,u2);
+		Filter f2 = new FilterPredicate("receiver",FilterOperator.EQUAL,u1);
+		ArrayList<Filter> l = new ArrayList<Filter>();
+		l.add(f1);l.add(f2);
+		Filter f = new CompositeFilter(CompositeFilterOperator.AND,l);
+		Query q = new Query("friendRequests").setFilter(f);
+		PreparedQuery res = datastore.prepare(q);		
+		Entity e = res.asSingleEntity();
+		datastore.delete(e.getKey());
 	}
 	
 //	public static void search(String u1){
