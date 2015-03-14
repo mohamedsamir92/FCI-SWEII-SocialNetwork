@@ -13,6 +13,8 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.Filter;
@@ -120,7 +122,26 @@ public class UserEntity {
 		}
 		return null;
 	}
+	
+	
+	public static UserEntity getUserByEMail(String email){
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Key key = KeyFactory.createKey("users", email);
+		Filter filter = 
+			    new FilterPredicate(Entity.KEY_RESERVED_PROPERTY,FilterOperator.EQUAL,key);
+		Query q = new Query("users").setFilter(filter);
+		
 
+		PreparedQuery res = datastore.prepare(q);		
+		Entity e = res.asSingleEntity();
+		if(e == null)return null;
+		UserEntity returnedUser = new UserEntity(e.getProperty(
+				"name").toString(), e.getProperty("email")
+				.toString(), e.getProperty("password").toString());
+		return returnedUser;
+	}
+	
+	
 	/**
 	 * This method will be used to save user object in datastore
 	 * 

@@ -62,7 +62,7 @@ public class Service {
 	 * @return Status json
 	 */
 	@POST
-	@Path("/RegistrationService")
+	@Path("/register")
 	public String registrationService(@FormParam("uname") String uname,
 			@FormParam("email") String email, @FormParam("password") String pass) {
 		UserEntity user = new UserEntity(uname, email, pass);
@@ -80,12 +80,12 @@ public class Service {
 	 * @return user in json format
 	 */
 	@POST
-	@Path("/LoginService")
-	public String loginService(@FormParam("uname") String uname,
+	@Path("/login")
+	public String loginService(@FormParam("email") String email,
 			@FormParam("password") String pass) {
 		JSONObject object = new JSONObject();
-		UserEntity user = UserEntity.getUser(uname, pass);
-		if (user == null) {
+		UserEntity user = UserEntity.getUserByEMail(email);
+		if (user == null || !user.getPass().equals(pass)) {
 			object.put("Status", "Failed");
 
 		} else {
@@ -101,17 +101,27 @@ public class Service {
 	
 	//http://hopa.com/rest/SendFriendRequest/a7med.fahmy94@gmail.com/hala.mohamed199@gmail.com
 	@POST
-	@Path("/SendFriendRequest/{user_one}&{user_two}")
+	@Path("/sendFriendRequest/{user_one}&{user_two}")
 	public void sendFriendRequest(@PathParam("user_one") String user_one,
 									@PathParam("user_two") String user_two){
 		UserEntity.sendFriendRequest(user_one,user_two);
 	}
 	
 	@POST
-	@Path("/AcceptFriendRequest/{user_one}&{user_two}")
+	@Path("/acceptFriendRequest/{user_one}&{user_two}")
 	public void acceptFriendRequest(@PathParam("user_one")String user_one,
 									@PathParam("user_two")String user_two){
 		UserEntity.acceptFriendRequest(user_one,user_two);
+	}
+	
+	@GET
+	@Path("/getUserByEMail/{email}")
+	public String hopa(@PathParam("email") String email){
+		UserEntity u = UserEntity.getUserByEMail(email);
+		if(u==null){
+			return "not found";
+		}
+		return u.getPass();
 	}
 	
 	
