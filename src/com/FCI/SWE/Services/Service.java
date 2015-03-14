@@ -99,29 +99,45 @@ public class Service {
 
 	}
 	
-	//http://hopa.com/rest/SendFriendRequest/a7med.fahmy94@gmail.com/hala.mohamed199@gmail.com
 	@POST
-	@Path("/sendFriendRequest/{user_one}&{user_two}")
-	public void sendFriendRequest(@PathParam("user_one") String user_one,
-									@PathParam("user_two") String user_two){
-		UserEntity.sendFriendRequest(user_one,user_two);
+	@Path("/sendFriendRequest")
+	public String sendFriendRequest(@FormParam("user_one") String user_one,
+									@FormParam("user_two") String user_two){
+		JSONObject obj = new JSONObject();
+		if(UserEntity.sendFriendRequest(user_one,user_two)){
+			obj.put("Status", "OK");
+		}else{
+			obj.put("Status", "Failed");
+		}
+		return obj.toString();
 	}
 	
 	@POST
-	@Path("/acceptFriendRequest/{user_one}&{user_two}")
-	public void acceptFriendRequest(@PathParam("user_one")String user_one,
-									@PathParam("user_two")String user_two){
-		UserEntity.acceptFriendRequest(user_one,user_two);
+	@Path("/acceptFriendRequest")
+	public String acceptFriendRequest(@FormParam("user_one")String user_one,
+									@FormParam("user_two")String user_two){
+		JSONObject obj = new JSONObject();
+		if(UserEntity.acceptFriendRequest(user_one,user_two)){
+			obj.put("Status" , "OK");
+		}else{
+			obj.put("Status", "Failed");
+		}
+		return obj.toString();
 	}
 	
 	@GET
 	@Path("/getUserByEMail/{email}")
-	public String hopa(@PathParam("email") String email){
-		UserEntity u = UserEntity.getUserByEMail(email);
+	public String getUserByEMail(@PathParam("email") String email){
+		JSONObject obj = new JSONObject();
+		UserEntity u = UserEntity.getUserByEMail(email);		
 		if(u==null){
-			return "not found";
+			obj.put("Status" , "Failed");
+		}else{
+			obj.put("Status", "OK");
+			obj.put("name", u.getName());
+			obj.put("email", u.getEmail());
 		}
-		return u.getPass();
+		return obj.toString();
 	}
 	
 	

@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.osgi.framework.hooks.service.FindHook;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -164,30 +165,37 @@ public class UserEntity {
 
 	}
 	
-	public static void sendFriendRequest(String u1, String u2){
+	public static boolean sendFriendRequest(String u1, String u2){
+		if(getUserByEMail(u1)==null || getUserByEMail(u2)== null){
+			return false;
+		}
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		Entity request = new Entity("friendRequests",u1+"&"+u2);
 		request.setProperty("sender", u1);
 		request.setProperty("receiver", u2);
 		datastore.put(request);
+		return true;
 	}
 	
-	public static void acceptFriendRequest(String u1, String u2){
+	public static boolean acceptFriendRequest(String u1, String u2){
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		
+		Key key = KeyFactory.createKey("friendRequests", u1+"&"+u2);
+		Filter filter = 
+			    new FilterPredicate(Entity.KEY_RESERVED_PROPERTY,FilterOperator.EQUAL,key);
+		Query q = new Query("friendRequests").setFilter(filter);
+		PreparedQuery res = datastore.prepare(q);
+		Entity e = res.asSingleEntity();
+		
+		if(e == null)return false;
+		datastore.delete(e.getKey());
+		
 		Entity a = new Entity("friends",u1+"&"+u2);
 		a.setProperty("u1", u1);
 		a.setProperty("u2", u2);
 		datastore.put(a);
-		
-		Filter f1 = new FilterPredicate("sender",FilterOperator.EQUAL,u2);
-		Filter f2 = new FilterPredicate("receiver",FilterOperator.EQUAL,u1);
-		ArrayList<Filter> l = new ArrayList<Filter>();
-		l.add(f1);l.add(f2);
-		Filter f = new CompositeFilter(CompositeFilterOperator.AND,l);
-		Query q = new Query("friendRequests").setFilter(f);
-		PreparedQuery res = datastore.prepare(q);		
-		Entity e = res.asSingleEntity();
-		datastore.delete(e.getKey());
+
+		return true;
 	}
 	
 //	public static void search(String u1){
