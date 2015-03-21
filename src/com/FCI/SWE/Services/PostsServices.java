@@ -26,6 +26,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.FCI.SWE.Models.PostsModel;
 import com.FCI.SWE.Models.UserEntity;
 import static com.FCI.SWE.Models.OfyService.ofy;
 
@@ -41,5 +42,34 @@ import static com.FCI.SWE.Models.OfyService.ofy;
 @Path("/posts/")
 @Produces(MediaType.TEXT_PLAIN)
 public class PostsServices{
+	
+	static private String status = "Status";
+	static private String ok = "OK";
+	static private String fail = "Failed";
+
+	
+	/*
+	 * @author Fahmy
+	 * 
+	 * @Date 21-3
+	 */
+	@POST
+	@Path("/writePost/")
+	public String writePost(@FormParam("email") String email,
+			@FormParam("password") String password,
+			@FormParam("text") String text) {
+
+		JSONObject obj = new JSONObject();
+
+		UserEntity u = UserEntity.getUserByEMail(email);
+		if (u == null) {
+			obj.put(status, fail);
+		} else {
+			new PostsModel(email,text).save();
+			obj.put(status,ok);
+		}
+
+		return obj.toString();
+	}
     
 }

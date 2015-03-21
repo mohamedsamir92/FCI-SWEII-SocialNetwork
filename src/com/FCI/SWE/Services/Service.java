@@ -42,6 +42,7 @@ import static com.FCI.SWE.Models.OfyService.ofy;
 @Produces(MediaType.TEXT_PLAIN)
 public class Service {
 
+
 	private String status = "Status";
 	private String ok     = "OK";
 	private String failed = "Failed";
@@ -89,10 +90,8 @@ public class Service {
             object.put("email", user.getEmail());
             object.put("password", user.getPass());
         }
-
-        return object.toString();
-
-    }
+		return object.toString();
+	}
 
     @POST
     @Path("/sendFriendRequest")
@@ -151,4 +150,6 @@ public class Service {
     }
     
 
+
 }
+
