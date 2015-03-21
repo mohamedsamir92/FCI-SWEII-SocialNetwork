@@ -37,7 +37,7 @@ import com.FCI.SWE.Models.UserEntity;
  * @since 2014-02-12
  * edited by esraa khaled
  */
-@Path("/rest/posts/")
+@Path("/posts/")
 @Produces(MediaType.TEXT_PLAIN)
 public class PostsServices{
     
