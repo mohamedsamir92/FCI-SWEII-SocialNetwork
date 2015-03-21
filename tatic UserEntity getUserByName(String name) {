@@ -1,0 +1,96 @@
+[33mcommit fea1932db93df8c65465d1b1e456cf11f4b212ee[m
+Author: esraa <esraakhaled994@gmail.com>
+Date:   Sat Mar 21 13:22:52 2015 +0200
+
+    search user by name
+
+[33mcommit 36f29fa48c77b7c4d2b50fcd9bea5437d1360a7f[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Sat Mar 14 16:46:31 2015 +0200
+
+    send/receive friend requests logic
+
+[33mcommit 76199f3d636a205f5eb85b98fe91c5f306723aaa[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Sat Mar 14 15:53:23 2015 +0200
+
+    log in with email,change services names,search user by email
+
+[33mcommit bb08140d824d50600ff1f4824a09f07861189f46[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Fri Mar 13 21:40:28 2015 +0200
+
+    removed userController and jsp files
+
+[33mcommit 48c8a4fbb7c1836734c9efa30997c7a25bcbe8a6[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Fri Mar 13 21:37:15 2015 +0200
+
+    solved java-7 problem
+
+[33mcommit 6eacb9ec94d5a25f09674320f1ebd17f9979b881[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Sat Mar 7 01:05:25 2015 +0200
+
+    accept friend deletes the friend request
+
+[33mcommit f4cecddf389295ead1e75afae66346199901017b[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Sat Mar 7 00:45:50 2015 +0200
+
+    accept friend request
+
+[33mcommit 2d0434357ef3a82c1059538758a0ca0f037680bc[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Fri Mar 6 18:53:49 2015 +0200
+
+    front-end removed
+
+[33mcommit 54a5e58f3a5216bda030806d7d8381d658c30ec6[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Sun Mar 1 20:18:47 2015 +0200
+
+    Android app
+
+[33mcommit 9dc271468fc2b808d0521cbc9ed4ea6fb905891d[m
+Merge: 95e20d3 15ef37e
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Sun Mar 1 20:17:46 2015 +0200
+
+    Merge branch 'master' of github.com:a7medfahmy94/FCI-SWEII-SocialNetwork
+
+[33mcommit 95e20d3359d7e0d70b697b7fbb805d2d2552d58b[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Sun Mar 1 19:22:05 2015 +0200
+
+    added android project
+
+[33mcommit 15ef37e9c05be6aae85a4fe5caf7f868478c2118[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Fri Feb 27 19:03:00 2015 +0200
+
+    Deployed on GoogleAppEngine
+
+[33mcommit ee7450a30a4b17e5c5c903ead71192ccfadb6fb1[m
+Author: a7medfahmy94 <a7med.fahmy94@gmail.com>
+Date:   Fri Feb 27 16:27:46 2015 +0200
+
+    fix errors and url to localhost:8888
+
+[33mcommit 22ac34de3f96c1fc57a0e8eb87cab25b8d2500ce[m
+Author: mohamedsamir92 <someone@example.com>
+Date:   Sat Feb 14 19:57:29 2015 +0200
+
+    Changes in url-patterns
+
+[33mcommit 79a96e1bb34722332439f8a0474729dc53fbd831[m
+Author: mohamedsamir92 <someone@example.com>
+Date:   Sat Feb 14 09:11:06 2015 +0200
+
+    Some Updates
+
+[33mcommit 75ee35de279a8b4a0c91094ee11ccb431f8aaa45[m
+Author: mohamedsamir92 <someone@example.com>
+Date:   Sat Feb 14 08:04:59 2015 +0200
+
+    Initial commit for project
