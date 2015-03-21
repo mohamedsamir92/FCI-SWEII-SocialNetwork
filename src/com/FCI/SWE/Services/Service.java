@@ -27,6 +27,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.FCI.SWE.Models.UserEntity;
+import static com.FCI.SWE.Models.OfyService.ofy;
 
 /**
  * This class contains REST services, also contains action function for web
@@ -41,11 +42,10 @@ import com.FCI.SWE.Models.UserEntity;
 @Produces(MediaType.TEXT_PLAIN)
 public class Service {
 
-    /*@GET
-     @Path("/index")
-     public Response index() {
-     return Response.ok(new Viewable("/jsp/entryPoint")).build();
-     }*/
+	private String status = "Status";
+	private String ok     = "OK";
+	private String failed = "Failed";
+	
     /**
      * Registration Rest service, this service will be called to make
      * registration. This function will store user data in data store
@@ -62,7 +62,7 @@ public class Service {
         UserEntity user = new UserEntity(uname, email, pass);
         user.saveUser();
         JSONObject object = new JSONObject();
-        object.put("Status", "OK");
+        object.put(status, ok);
         return object.toString();
     }
 
@@ -81,10 +81,10 @@ public class Service {
         JSONObject object = new JSONObject();
         UserEntity user = UserEntity.getUserByEMail(email);
         if (user == null || !user.getPass().equals(pass)) {
-            object.put("Status", "Failed");
+            object.put(status, failed);
 
         } else {
-            object.put("Status", "OK");
+            object.put(status, ok);
             object.put("name", user.getName());
             object.put("email", user.getEmail());
             object.put("password", user.getPass());
@@ -100,9 +100,9 @@ public class Service {
             @FormParam("user_two") String user_two) {
         JSONObject obj = new JSONObject();
         if (UserEntity.sendFriendRequest(user_one, user_two)) {
-            obj.put("Status", "OK");
+            obj.put(status, ok);
         } else {
-            obj.put("Status", "Failed");
+            obj.put(status, failed);
         }
         return obj.toString();
     }
@@ -113,9 +113,9 @@ public class Service {
             @FormParam("user_two") String user_two) {
         JSONObject obj = new JSONObject();
         if (UserEntity.acceptFriendRequest(user_one, user_two)) {
-            obj.put("Status", "OK");
+            obj.put(status, ok);
         } else {
-            obj.put("Status", "Failed");
+            obj.put(status, failed);
         }
         return obj.toString();
     }
@@ -126,9 +126,9 @@ public class Service {
         JSONObject obj = new JSONObject();
         UserEntity u = UserEntity.getUserByEMail(email);
         if (u == null) {
-            obj.put("Status", "Failed");
+            obj.put(status, failed);
         } else {
-            obj.put("Status", "OK");
+            obj.put(status, ok);
             obj.put("name", u.getName());
             obj.put("email", u.getEmail());
         }
@@ -141,13 +141,14 @@ public class Service {
         JSONObject obj = new JSONObject();
         UserEntity u = UserEntity.getUserByName(name);
         if (u == null) {
-            obj.put("Status", "Failed");
+            obj.put(status, failed);
         } else {
-            obj.put("Status", "OK");
+            obj.put(status, ok);
             obj.put("name", u.getName());
             obj.put("email", u.getEmail());
         }
         return obj.toString();
     }
+    
 
 }

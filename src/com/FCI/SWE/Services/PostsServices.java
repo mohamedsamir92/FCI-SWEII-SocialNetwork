@@ -27,6 +27,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.FCI.SWE.Models.UserEntity;
+import static com.FCI.SWE.Models.OfyService.ofy;
 
 /**
  * This class contains REST services for posts, also contains action function for web
