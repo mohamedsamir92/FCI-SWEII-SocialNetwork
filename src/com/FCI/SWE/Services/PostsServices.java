@@ -28,6 +28,7 @@ import org.json.simple.parser.ParseException;
 
 import com.FCI.SWE.Models.PostsModel;
 import com.FCI.SWE.Models.UserEntity;
+import static com.FCI.SWE.Models.OfyService.ofy;
 
 /**
  * This class contains REST services for posts, also contains action function for web
@@ -52,11 +53,11 @@ public class PostsServices{
 	 * 
 	 * @Date 21-3
 	 */
-	@GET
-	@Path("/writePost/{email}&{password}&{text}")
-	public String writePost(@PathParam("email") String email,
-			@PathParam("password") String password,
-			@PathParam("text") String text) {
+	@POST
+	@Path("/writePost/")
+	public String writePost(@FormParam("email") String email,
+			@FormParam("password") String password,
+			@FormParam("text") String text) {
 
 		JSONObject obj = new JSONObject();
 
@@ -64,7 +65,7 @@ public class PostsServices{
 		if (u == null) {
 			obj.put(status, fail);
 		} else {
-			PostsModel.writePost(email, text);
+			new PostsModel(email,text).save();
 			obj.put(status,ok);
 		}
 

@@ -9,21 +9,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.osgi.framework.hooks.service.FindHook;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
-import com.google.appengine.api.datastore.Query.CompositeFilter;
-import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
-import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.annotation.*;
+
+import static com.FCI.SWE.Models.OfyService.ofy;
 
 /**
  * <h1>User Entity class</h1>
@@ -35,12 +24,15 @@ import com.googlecode.objectify.ObjectifyService;
  * @version 1.0
  * @since 2014-02-12
  */
-public class UserEntity {
 
-    private String name;
-    private String email;
+@Entity
+public class UserEntity {
+	@Id private String email;
+    @Index private String name;
     private String password;
 
+    
+    public UserEntity(){}
     /**
      * Constructor accepts user data
      *
@@ -100,56 +92,21 @@ public class UserEntity {
      * @return Constructed user entity
      */
     public static UserEntity getUser(String name, String pass) {
-        DatastoreService datastore = DatastoreServiceFactory
-                .getDatastoreService();
+    	return ofy().load().type(UserEntity.class).
+        			filter("name",name).filter("password",pass).first().now();
+        
 
-        Query gaeQuery = new Query("users");
-        PreparedQuery pq = datastore.prepare(gaeQuery);
-        for (Entity entity : pq.asIterable()) {
-            System.out.println(entity.getProperty("name").toString());
-            if (entity.getProperty("name").toString().equals(name)
-                    && entity.getProperty("password").toString().equals(pass)) {
-                UserEntity returnedUser = new UserEntity(entity.getProperty(
-                        "name").toString(), entity.getProperty("email")
-                        .toString(), entity.getProperty("password").toString());
-                return returnedUser;
-            }
-        }
-        return null;
     }
 
     public static UserEntity getUserByEMail(String email) {
-    	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Key key = KeyFactory.createKey("users", email);
-        Filter filter
-                = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL, key);
-        Query q = new Query("users").setFilter(filter);
-
-        PreparedQuery res = datastore.prepare(q);
-        Entity e = res.asSingleEntity();
-        if (e == null) {
-            return null;
-        }
-        UserEntity returnedUser = new UserEntity(e.getProperty(
-                "name").toString(), e.getProperty("email")
-                .toString(), e.getProperty("password").toString());
-        return returnedUser;
+        return ofy().load().type(UserEntity.class).
+    			id(email).now();
     }
 
     public static UserEntity getUserByName(String name) {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Filter filter = new FilterPredicate("name", FilterOperator.EQUAL, name);
-        Query q = new Query("users").setFilter(filter);
+        return ofy().load().type(UserEntity.class).
+    			filter("name",name).first().now();
 
-        PreparedQuery res = datastore.prepare(q);
-        Entity e = res.asSingleEntity();
-        if (e == null) {
-            return null;
-        }
-        UserEntity returnedUser = new UserEntity(e.getProperty(
-                "name").toString(), e.getProperty("email")
-                .toString(), e.getProperty("password").toString());
-        return returnedUser;
     }
 
     /**
@@ -158,66 +115,37 @@ public class UserEntity {
      * @return boolean if user is saved correctly or not
      */
     public Boolean saveUser() {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Query gaeQuery = new Query("users");
-        PreparedQuery pq = datastore.prepare(gaeQuery);
-        List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
-
-        Entity employee = new Entity("users", this.email);
-
-        employee.setProperty("name", this.name);
-        employee.setProperty("email", this.email);
-        employee.setProperty("password", this.password);
-        datastore.put(employee);
-
-        return true;
-
+    	ofy().save().entity(this);
+    	return true;
     }
 
     public static boolean sendFriendRequest(String u1, String u2) {
-        if (getUserByEMail(u1) == null || getUserByEMail(u2) == null) {
+
+    	if (getUserByEMail(u1) == null || getUserByEMail(u2) == null) {
             return false;
         }
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Entity request = new Entity("friendRequests", u1 + "&" + u2);
-        request.setProperty("sender", u1);
-        request.setProperty("receiver", u2);
-        datastore.put(request);
+    	ofy().save().entity(new FriendRequest(u1,u2));
         return true;
     }
 
     public static boolean acceptFriendRequest(String u1, String u2) {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-        Key key = KeyFactory.createKey("friendRequests", u1 + "&" + u2);
-        Filter filter
-                = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL, key);
-        Query q = new Query("friendRequests").setFilter(filter);
-        PreparedQuery res = datastore.prepare(q);
-        Entity e = res.asSingleEntity();
-
-        if (e == null) {
+    	FriendRequest f = (FriendRequest)ofy().load().type(FriendRequest.class)
+    			.filter("user_one",u1).filter("user_two",u2).first().now();
+    	FriendRequest ff = (FriendRequest)ofy().load().type(FriendRequest.class)
+    			.filter("user_two",u1).filter("user_one",u2).first().now();
+    	
+        if (f == null && ff == null) {
             return false;
         }
-        datastore.delete(e.getKey());
+        if(f != null)
+        	ofy().delete().entity(f);
+        if(ff != null)
+        	ofy().delete().entity(ff);
 
-        Entity a = new Entity("friends", u1 + "&" + u2);
-        a.setProperty("u1", u1);
-        a.setProperty("u2", u2);
-        datastore.put(a);
+        Friends nf = new Friends(u1,u2);
+        ofy().save().entity(nf);
 
         return true;
     }
 
-//	public static void search(String u1){
-//		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-//		Filter f = new FilterPredicate("u1",FilterOperator.EQUAL,u1);
-//		Query q = new Query("friends").setFilter(f);
-//		
-//		PreparedQuery res = datastore.prepare(q);
-//		
-//		Entity e = res.asSingleEntity();
-//		System.out.println(e.toString());
-//
-//	}
 }

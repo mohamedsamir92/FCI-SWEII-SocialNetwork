@@ -27,6 +27,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.FCI.SWE.Models.UserEntity;
+import static com.FCI.SWE.Models.OfyService.ofy;
 
 /**
  * This class contains REST services, also contains action function for web
@@ -41,65 +42,54 @@ import com.FCI.SWE.Models.UserEntity;
 @Produces(MediaType.TEXT_PLAIN)
 public class Service {
 
-	static private String status = "Status";
-	static private String ok = "OK";
-	static private String fail = "Failed";
+
+	private String status = "Status";
+	private String ok     = "OK";
+	private String failed = "Failed";
 	
-	/*
-	 * @GET
-	 * 
-	 * @Path("/index") public Response index() { return Response.ok(new
-	 * Viewable("/jsp/entryPoint")).build(); }
-	 */
+    /**
+     * Registration Rest service, this service will be called to make
+     * registration. This function will store user data in data store
+     *
+     * @param uname provided user name
+     * @param email provided user email
+     * @param pass provided password
+     * @return Status json
+     */
+    @POST
+    @Path("/register")
+    public String registrationService(@FormParam("uname") String uname,
+            @FormParam("email") String email, @FormParam("password") String pass) {
+        UserEntity user = new UserEntity(uname, email, pass);
+        user.saveUser();
+        JSONObject object = new JSONObject();
+        object.put(status, ok);
+        return object.toString();
+    }
 
-	/**
-	 * Registration Rest service, this service will be called to make
-	 * registration. This function will store user data in data store
-	 * 
-	 * @param uname
-	 *            provided user name
-	 * @param email
-	 *            provided user email
-	 * @param pass
-	 *            provided password
-	 * @return Status json
-	 */
-	@POST
-	@Path("/register")
-	public String registrationService(@FormParam("uname") String uname,
-			@FormParam("email") String email, @FormParam("password") String pass) {
-		UserEntity user = new UserEntity(uname, email, pass);
-		user.saveUser();
-		JSONObject object = new JSONObject();
-		object.put(status, ok);
-		return object.toString();
-	}
+    /**
+     * Login Rest Service, this service will be called to make login process
+     * also will check user data and returns new user from datastore
+     *
+     * @param uname provided user name
+     * @param pass provided user password
+     * @return user in json format
+     */
+    @POST
+    @Path("/login")
+    public String loginService(@FormParam("email") String email,
+            @FormParam("password") String pass) {
+        JSONObject object = new JSONObject();
+        UserEntity user = UserEntity.getUserByEMail(email);
+        if (user == null || !user.getPass().equals(pass)) {
+            object.put(status, failed);
 
-	/**
-	 * Login Rest Service, this service will be called to make login process
-	 * also will check user data and returns new user from datastore
-	 * 
-	 * @param uname
-	 *            provided user name
-	 * @param pass
-	 *            provided user password
-	 * @return user in json format
-	 */
-	@POST
-	@Path("/login")
-	public String loginService(@FormParam("email") String email,
-			@FormParam("password") String pass) {
-		JSONObject object = new JSONObject();
-		UserEntity user = UserEntity.getUserByEMail(email);
-		if (user == null || !user.getPass().equals(pass)) {
-			object.put(status, fail);
-
-		} else {
-			object.put(status, ok);
-			object.put("name", user.getName());
-			object.put("email", user.getEmail());
-			object.put("password", user.getPass());
-		}
+        } else {
+            object.put(status, ok);
+            object.put("name", user.getName());
+            object.put("email", user.getEmail());
+            object.put("password", user.getPass());
+        }
 		return object.toString();
 	}
 
@@ -111,7 +101,7 @@ public class Service {
         if (UserEntity.sendFriendRequest(user_one, user_two)) {
             obj.put(status, ok);
         } else {
-            obj.put(status, fail);
+            obj.put(status, failed);
         }
         return obj.toString();
     }
@@ -124,7 +114,7 @@ public class Service {
         if (UserEntity.acceptFriendRequest(user_one, user_two)) {
             obj.put(status, ok);
         } else {
-            obj.put(status, fail);
+            obj.put(status, failed);
         }
         return obj.toString();
     }
@@ -135,7 +125,7 @@ public class Service {
         JSONObject obj = new JSONObject();
         UserEntity u = UserEntity.getUserByEMail(email);
         if (u == null) {
-            obj.put(status, fail);
+            obj.put(status, failed);
         } else {
             obj.put(status, ok);
             obj.put("name", u.getName());
@@ -150,7 +140,7 @@ public class Service {
         JSONObject obj = new JSONObject();
         UserEntity u = UserEntity.getUserByName(name);
         if (u == null) {
-            obj.put(status, fail);
+            obj.put(status, failed);
         } else {
             obj.put(status, ok);
             obj.put("name", u.getName());
@@ -158,6 +148,7 @@ public class Service {
         }
         return obj.toString();
     }
+    
 
 
 }
