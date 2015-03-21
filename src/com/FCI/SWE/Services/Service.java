@@ -140,19 +140,5 @@ public class Service {
 		return obj.toString();
 	}
 	
-	@GET
-	@Path("/searchUsersByName/{name}")
-	public String getUserByName(@PathParam("name") String name){
-		JSONObject obj = new JSONObject();
-		UserEntity u = UserEntity.getUserByEMail(name);		
-		if(u==null){
-			obj.put("Status" , "Failed");
-		}else{
-			obj.put("Status", "OK");
-			obj.put("name", u.getName());
-			obj.put("email", u.getEmail());
-		}
-		return obj.toString();
-	}
-        
+	
 }
