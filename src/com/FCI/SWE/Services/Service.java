@@ -139,7 +139,7 @@ public class Service {
     @Path("/searchUsersByName/{name}")
     public String getUserByName(@PathParam("name") String name) {
         JSONObject obj = new JSONObject();
-        UserEntity u = UserEntity.getUserByEMail(name);
+        UserEntity u = UserEntity.getUserByName(name);
         if (u == null) {
             obj.put("Status", "Failed");
         } else {

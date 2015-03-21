@@ -138,9 +138,7 @@ public class UserEntity {
 
     public static UserEntity getUserByName(String name) {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Key key = KeyFactory.createKey("users", name);
-        Filter filter
-                = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL, key);
+        Filter filter = new FilterPredicate("name", FilterOperator.EQUAL, name);
         Query q = new Query("users").setFilter(filter);
 
         PreparedQuery res = datastore.prepare(q);
