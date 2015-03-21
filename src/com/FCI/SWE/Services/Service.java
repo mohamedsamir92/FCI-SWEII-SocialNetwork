@@ -31,7 +31,7 @@ import com.FCI.SWE.Models.UserEntity;
 /**
  * This class contains REST services, also contains action function for web
  * application
- * 
+ *
  * @author Mohamed Samir
  * @version 1.0
  * @since 2014-02-12
@@ -100,73 +100,65 @@ public class Service {
 			object.put("email", user.getEmail());
 			object.put("password", user.getPass());
 		}
-
 		return object.toString();
-
 	}
 
-	@POST
-	@Path("/sendFriendRequest")
-	public String sendFriendRequest(@FormParam("user_one") String user_one,
-			@FormParam("user_two") String user_two) {
-		JSONObject obj = new JSONObject();
-		if (UserEntity.sendFriendRequest(user_one, user_two)) {
-			obj.put(status, ok);
-		} else {
-			obj.put(status, fail);
-		}
-		return obj.toString();
-	}
+    @POST
+    @Path("/sendFriendRequest")
+    public String sendFriendRequest(@FormParam("user_one") String user_one,
+            @FormParam("user_two") String user_two) {
+        JSONObject obj = new JSONObject();
+        if (UserEntity.sendFriendRequest(user_one, user_two)) {
+            obj.put(status, ok);
+        } else {
+            obj.put(status, fail);
+        }
+        return obj.toString();
+    }
 
-	@POST
-	@Path("/acceptFriendRequest")
-	public String acceptFriendRequest(@FormParam("user_one") String user_one,
-			@FormParam("user_two") String user_two) {
-		JSONObject obj = new JSONObject();
-		if (UserEntity.acceptFriendRequest(user_one, user_two)) {
-			obj.put(status, ok);
-		} else {
-			obj.put(status, fail);
-		}
-		return obj.toString();
-	}
+    @POST
+    @Path("/acceptFriendRequest")
+    public String acceptFriendRequest(@FormParam("user_one") String user_one,
+            @FormParam("user_two") String user_two) {
+        JSONObject obj = new JSONObject();
+        if (UserEntity.acceptFriendRequest(user_one, user_two)) {
+            obj.put(status, ok);
+        } else {
+            obj.put(status, fail);
+        }
+        return obj.toString();
+    }
 
-	@GET
-	@Path("/getUserByEMail/{email}")
-	public String getUserByEMail(@PathParam("email") String email) {
-		JSONObject obj = new JSONObject();
-		UserEntity u = UserEntity.getUserByEMail(email);
-		if (u == null) {
-			obj.put(status, fail);
-		} else {
-			obj.put(status, ok);
-			obj.put("name", u.getName());
-			obj.put("email", u.getEmail());
-		}
-		return obj.toString();
-	}
+    @GET
+    @Path("/getUserByEMail/{email}")
+    public String getUserByEMail(@PathParam("email") String email) {
+        JSONObject obj = new JSONObject();
+        UserEntity u = UserEntity.getUserByEMail(email);
+        if (u == null) {
+            obj.put(status, fail);
+        } else {
+            obj.put(status, ok);
+            obj.put("name", u.getName());
+            obj.put("email", u.getEmail());
+        }
+        return obj.toString();
+    }
 
-	/*
-	 * @author Fahmy
-	 * 
-	 * @Date 21-3
-	 */
-	@POST
-	@Path("/writePost")
-	public String writePost(@FormParam("email") String email,
-			@FormParam("password") String password,
-			@FormParam("text") String text) {
+    @GET
+    @Path("/searchUsersByName/{name}")
+    public String getUserByName(@PathParam("name") String name) {
+        JSONObject obj = new JSONObject();
+        UserEntity u = UserEntity.getUserByName(name);
+        if (u == null) {
+            obj.put(status, fail);
+        } else {
+            obj.put(status, ok);
+            obj.put("name", u.getName());
+            obj.put("email", u.getEmail());
+        }
+        return obj.toString();
+    }
 
-		JSONObject obj = new JSONObject();
-
-		UserEntity u = UserEntity.getUserByEMail(email);
-		if (u == null) {
-			obj.put(status, fail);
-		} else {
-			obj.put(status,ok);
-		}
-
-		return obj.toString();
-	}
 
 }
+
