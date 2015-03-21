@@ -40,16 +40,19 @@ import com.FCI.SWE.Models.UserEntity;
 @Path("/")
 @Produces(MediaType.TEXT_PLAIN)
 public class Service {
-	
-	
-	/*@GET
-	@Path("/index")
-	public Response index() {
-		return Response.ok(new Viewable("/jsp/entryPoint")).build();
-	}*/
 
+	static private String status = "Status";
+	static private String ok = "OK";
+	static private String fail = "Failed";
+	
+	/*
+	 * @GET
+	 * 
+	 * @Path("/index") public Response index() { return Response.ok(new
+	 * Viewable("/jsp/entryPoint")).build(); }
+	 */
 
-		/**
+	/**
 	 * Registration Rest service, this service will be called to make
 	 * registration. This function will store user data in data store
 	 * 
@@ -68,15 +71,18 @@ public class Service {
 		UserEntity user = new UserEntity(uname, email, pass);
 		user.saveUser();
 		JSONObject object = new JSONObject();
-		object.put("Status", "OK");
+		object.put(status, ok);
 		return object.toString();
 	}
 
 	/**
 	 * Login Rest Service, this service will be called to make login process
 	 * also will check user data and returns new user from datastore
-	 * @param uname provided user name
-	 * @param pass provided user password
+	 * 
+	 * @param uname
+	 *            provided user name
+	 * @param pass
+	 *            provided user password
 	 * @return user in json format
 	 */
 	@POST
@@ -86,10 +92,10 @@ public class Service {
 		JSONObject object = new JSONObject();
 		UserEntity user = UserEntity.getUserByEMail(email);
 		if (user == null || !user.getPass().equals(pass)) {
-			object.put("Status", "Failed");
+			object.put(status, fail);
 
 		} else {
-			object.put("Status", "OK");
+			object.put(status, ok);
 			object.put("name", user.getName());
 			object.put("email", user.getEmail());
 			object.put("password", user.getPass());
@@ -98,47 +104,69 @@ public class Service {
 		return object.toString();
 
 	}
-	
+
 	@POST
 	@Path("/sendFriendRequest")
 	public String sendFriendRequest(@FormParam("user_one") String user_one,
-									@FormParam("user_two") String user_two){
+			@FormParam("user_two") String user_two) {
 		JSONObject obj = new JSONObject();
-		if(UserEntity.sendFriendRequest(user_one,user_two)){
-			obj.put("Status", "OK");
-		}else{
-			obj.put("Status", "Failed");
+		if (UserEntity.sendFriendRequest(user_one, user_two)) {
+			obj.put(status, ok);
+		} else {
+			obj.put(status, fail);
 		}
 		return obj.toString();
 	}
-	
+
 	@POST
 	@Path("/acceptFriendRequest")
-	public String acceptFriendRequest(@FormParam("user_one")String user_one,
-									@FormParam("user_two")String user_two){
+	public String acceptFriendRequest(@FormParam("user_one") String user_one,
+			@FormParam("user_two") String user_two) {
 		JSONObject obj = new JSONObject();
-		if(UserEntity.acceptFriendRequest(user_one,user_two)){
-			obj.put("Status" , "OK");
-		}else{
-			obj.put("Status", "Failed");
+		if (UserEntity.acceptFriendRequest(user_one, user_two)) {
+			obj.put(status, ok);
+		} else {
+			obj.put(status, fail);
 		}
 		return obj.toString();
 	}
-	
+
 	@GET
 	@Path("/getUserByEMail/{email}")
-	public String getUserByEMail(@PathParam("email") String email){
+	public String getUserByEMail(@PathParam("email") String email) {
 		JSONObject obj = new JSONObject();
-		UserEntity u = UserEntity.getUserByEMail(email);		
-		if(u==null){
-			obj.put("Status" , "Failed");
-		}else{
-			obj.put("Status", "OK");
+		UserEntity u = UserEntity.getUserByEMail(email);
+		if (u == null) {
+			obj.put(status, fail);
+		} else {
+			obj.put(status, ok);
 			obj.put("name", u.getName());
 			obj.put("email", u.getEmail());
 		}
 		return obj.toString();
 	}
-	
-	
+
+	/*
+	 * @author Fahmy
+	 * 
+	 * @Date 21-3
+	 */
+	@POST
+	@Path("/writePost")
+	public String writePost(@FormParam("email") String email,
+			@FormParam("password") String password,
+			@FormParam("text") String text) {
+
+		JSONObject obj = new JSONObject();
+
+		UserEntity u = UserEntity.getUserByEMail(email);
+		if (u == null) {
+			obj.put(status, fail);
+		} else {
+			obj.put(status,ok);
+		}
+
+		return obj.toString();
+	}
+
 }
