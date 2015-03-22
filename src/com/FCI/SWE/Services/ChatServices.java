@@ -7,6 +7,7 @@ import javax.ws.rs.Path;
 import org.json.simple.JSONObject;
 
 import com.FCI.SWE.Models.Chat;
+import com.FCI.SWE.Models.Friends;
 
 
 
@@ -22,9 +23,14 @@ public class ChatServices {
 						@FormParam("receiver")String receiver,
 						@FormParam("text")String text){
 		JSONObject obj = new JSONObject();
-		Chat.send(sender,receiver,text);
-		obj.put(status, ok);
 		
+		if(!Friends.areFriends(sender, receiver)){
+			obj.put(status , failed);
+		}else{
+			Chat.send(sender,receiver,text);
+			obj.put(status, ok);
+		}
+			
 		return obj.toString();
 	}
 	
