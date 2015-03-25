@@ -53,6 +53,13 @@ public class PostsServices{
 	 * 
 	 * @Date 21-3
 	 */
+	/**
+	 * service allow a user to write a post 
+	 * @param email
+	 * @param password
+	 * @param text
+	 * @return ok if user exists fail otherwise
+	 */
 	@POST
 	@Path("/writePost/")
 	public String writePost(@FormParam("email") String email,

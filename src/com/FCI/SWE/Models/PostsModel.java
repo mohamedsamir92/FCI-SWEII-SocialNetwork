@@ -21,14 +21,23 @@ public class PostsModel{
 	@Id Long id;
 	@Index String owner_email;
 	String text;
-	
+	/**
+	 * empty constructor 
+	 */
     public PostsModel(){}
+    /**
+     * constructor takes the owner and string text for a post
+     * @param owner
+     * @param t
+     */
     public PostsModel(String owner,String t){
     	owner_email = owner;
     	text = t;
     }
     
-    
+    /**
+     * this method save the post to the datastore
+     */
     public void save(){
     	ofy().save().entity(this);
     }

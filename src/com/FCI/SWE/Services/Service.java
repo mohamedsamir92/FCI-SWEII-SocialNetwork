@@ -92,7 +92,12 @@ public class Service {
         }
 		return object.toString();
 	}
-
+/**
+ * send friend request service  
+ * @param user_one
+ * @param user_two
+ * @return ok if users exist failed otherwise
+ */
     @POST
     @Path("/sendFriendRequest")
     public String sendFriendRequest(@FormParam("user_one") String user_one,
@@ -106,6 +111,12 @@ public class Service {
         return obj.toString();
     }
 
+    /**
+     * accept friend request service
+     * @param user_one
+     * @param user_two
+     * @return ok if users exist failed other wise
+     */
     @POST
     @Path("/acceptFriendRequest")
     public String acceptFriendRequest(@FormParam("user_one") String user_one,
@@ -119,6 +130,11 @@ public class Service {
         return obj.toString();
     }
 
+    /**
+     * get user by email service
+     * @param email
+     * @return ok if user exist and his name and email , failed otherwise
+     */
     @GET
     @Path("/getUserByEMail/{email}")
     public String getUserByEMail(@PathParam("email") String email) {
@@ -134,6 +150,11 @@ public class Service {
         return obj.toString();
     }
 
+    /**
+     * get users by name service
+     * @param name
+     * @return ok and user name and mail if exists failed otherwise
+     */
     @GET
     @Path("/searchUsersByName/{name}")
     public String getUserByName(@PathParam("name") String name) {
