@@ -47,14 +47,26 @@ public class UserEntity {
 
     }
 
-    public String getName() {
-        return name;
+    
+    /**
+     * this method gets user name
+     * @return name
+     */
+    public String getName() {   
+    return name;
     }
-
+    /**
+     * this method gets user email
+     * @return email
+     */
     public String getEmail() {
         return email;
     }
-
+/**
+ * this method gets user password
+ * @return password
+ */
+    
     public String getPass() {
         return password;
     }
@@ -98,11 +110,20 @@ public class UserEntity {
 
     }
 
+    /**
+     * this method gets user by mail
+     * @param email
+     * @return user
+     */
     public static UserEntity getUserByEMail(String email) {
         return ofy().load().type(UserEntity.class).
     			id(email).now();
     }
-
+    /**
+     * this method gets user by name
+     * @param name
+     * @return user
+     */
     public static UserEntity getUserByName(String name) {
         return ofy().load().type(UserEntity.class).
     			filter("name",name).first().now();
@@ -118,7 +139,12 @@ public class UserEntity {
     	ofy().save().entity(this);
     	return true;
     }
-
+ /**
+  * this method sends a friend request from u1 to u2
+  * @param u1
+  * @param u2
+  * @return true if send false otherwise
+  */
     public static boolean sendFriendRequest(String u1, String u2) {
 
     	if (getUserByEMail(u1) == null || getUserByEMail(u2) == null) {
@@ -127,7 +153,12 @@ public class UserEntity {
     	ofy().save().entity(new FriendRequest(u1,u2));
         return true;
     }
-
+    /**
+     * this method accepts a friend request from u1 to u2
+     * @param u1
+     * @param u2
+     * @return true if added to friends false otherwise
+     */
     public static boolean acceptFriendRequest(String u1, String u2) {
     	FriendRequest f = (FriendRequest)ofy().load().type(FriendRequest.class)
     			.filter("user_one",u1).filter("user_two",u2).first().now();

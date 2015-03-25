@@ -13,14 +13,29 @@ public class FriendRequest {
 	@Index String user_one ;
 	@Index String user_two;
     private static Objectify ofy = OfyService.ofy();
-
+    /**
+     * empty constructor
+     */
 	public FriendRequest(){}
+	/**
+	 * this method assigns a friend request from a to b
+	 * @param a
+	 * @param b
+	 */
 	public FriendRequest(String a,String b){
 		user_one = a;
 		user_two = b;
 	}
 	
+	/**
+	 * getter for user 1
+	 * @return user 1
+	 */
 	public String getUserOne(){return user_one;}
+	/**
+	 * getter for user 2
+	 * @return user 2
+	 */
 	public String getUserTwo(){return user_two;}
 	
 	
