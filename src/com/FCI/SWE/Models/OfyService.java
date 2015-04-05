@@ -12,6 +12,8 @@ public class OfyService {
 		ObjectifyService.register(UserEntity.class);
 		ObjectifyService.register(FriendRequest.class);
 		ObjectifyService.register(Friends.class);
+		ObjectifyService.register(FriendRequestNotification.class);
+		ObjectifyService.register(MessageNotification.class);
 	}
 	
 	public static Objectify ofy() {

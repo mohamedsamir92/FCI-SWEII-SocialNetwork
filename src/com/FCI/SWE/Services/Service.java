@@ -26,7 +26,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.FCI.SWE.Models.FriendRequestNotification;
+import com.FCI.SWE.Models.MessageNotification;
+import com.FCI.SWE.Models.Notification;
 import com.FCI.SWE.Models.UserEntity;
+
 import static com.FCI.SWE.Models.OfyService.ofy;
 
 /**
@@ -104,6 +108,7 @@ public class Service {
             @FormParam("user_two") String user_two) {
         JSONObject obj = new JSONObject();
         if (UserEntity.sendFriendRequest(user_one, user_two)) {
+        	new FriendRequestNotification(user_two , user_one).save();
             obj.put(status, ok);
         } else {
             obj.put(status, failed);
@@ -170,7 +175,28 @@ public class Service {
         return obj.toString();
     }
     
-
-
+    
+    /**
+     * @author Fahmy
+     * @Param email
+     * @param password
+     * @return list of notification
+     */
+    @GET
+    @Path("/notifications")
+    public String getNotifications(@PathParam("email")String email,
+    		@PathParam("password")String password){
+    	JSONObject obj = new JSONObject();
+    	if(UserEntity.getUser(email, password) == null){
+    		obj.put(status, failed);
+    	}else{
+    		obj.put(status, ok);
+    		ArrayList<Notification> ret = new ArrayList<Notification>(); 
+    		ret.addAll(MessageNotification.getListOfNotifications(email));
+    		ret.addAll(FriendRequestNotification.getListOfNotifications(email));
+    		obj.put("notifications", ret);
+    	}
+    	return obj.toString();
+    }
 }
 
