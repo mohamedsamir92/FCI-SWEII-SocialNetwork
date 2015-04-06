@@ -103,9 +103,9 @@ public class UserEntity {
      * @param pass user password
      * @return Constructed user entity
      */
-    public static UserEntity getUser(String name, String pass) {
+    public static UserEntity getUser(String email, String pass) {
     	return ofy().load().type(UserEntity.class).
-        			filter("name",name).filter("password",pass).first().now();
+        			filter("email",email).filter("password",pass).first().now();
         
 
     }
@@ -127,7 +127,6 @@ public class UserEntity {
     public static UserEntity getUserByName(String name) {
         return ofy().load().type(UserEntity.class).
     			filter("name",name).first().now();
-
     }
 
     /**
