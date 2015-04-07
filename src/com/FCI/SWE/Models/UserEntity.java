@@ -104,10 +104,9 @@ public class UserEntity {
      * @return Constructed user entity
      */
     public static UserEntity getUser(String email, String pass) {
-    	return ofy().load().type(UserEntity.class).
-        			filter("email",email).filter("password",pass).first().now();
-        
-
+    	UserEntity e = getUserByEMail(email);
+    	if(e.password.equals(pass))return e;
+    	return null;        
     }
 
     /**

@@ -14,6 +14,7 @@ public class FriendRequestNotification extends Notification{
 	private String sender;
 	@Id private Long friendRequestNotiID;
 	
+	public FriendRequestNotification(){}
 	public FriendRequestNotification(String s,String r){
 		this.user_email = s;
 		this.sender = r;
@@ -24,11 +25,13 @@ public class FriendRequestNotification extends Notification{
 	}
 
 	public static ArrayList<FriendRequestNotification> getListOfNotifications(String email){
-		ArrayList<FriendRequestNotification> ret;
-    	ret = (ArrayList<FriendRequestNotification>)
-    			ofy().load().type(FriendRequestNotification.class).
-    			filter("user_email",email).list();
+		ArrayList<FriendRequestNotification> ret = new ArrayList<FriendRequestNotification>();
+    	ret.addAll(ofy().load().type(FriendRequestNotification.class).
+    			filter("user_email",email).list());
 		return ret;
+	}
+	public String getSender(){
+		return this.sender;
 	}
 
 }

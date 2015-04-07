@@ -30,6 +30,7 @@ import com.FCI.SWE.Models.FriendRequestNotification;
 import com.FCI.SWE.Models.MessageNotification;
 import com.FCI.SWE.Models.Notification;
 import com.FCI.SWE.Models.UserEntity;
+import com.google.appengine.labs.repackaged.org.json.JSONArray;
 
 import static com.FCI.SWE.Models.OfyService.ofy;
 
@@ -183,7 +184,7 @@ public class Service {
      * @return list of notification
      */
     @GET
-    @Path("/notifications")
+    @Path("/notifications/{email}&{password}")
     public String getNotifications(@PathParam("email")String email,
     		@PathParam("password")String password){
     	JSONObject obj = new JSONObject();
@@ -191,10 +192,29 @@ public class Service {
     		obj.put(status, failed);
     	}else{
     		obj.put(status, ok);
-    		ArrayList<Notification> ret = new ArrayList<Notification>(); 
-    		ret.addAll(MessageNotification.getListOfNotifications(email));
-    		ret.addAll(FriendRequestNotification.getListOfNotifications(email));
-    		obj.put("notifications", ret);
+    		ArrayList<MessageNotification> m = MessageNotification.getListOfNotifications(email);
+    		ArrayList<FriendRequestNotification> f = FriendRequestNotification.getListOfNotifications(email);
+
+    		JSONArray emails = new JSONArray();
+//    		String emails[] = new String[m.size()];
+    		JSONArray messages = new JSONArray();
+//    		String messages[] = new String[m.size()];
+    		int i = 0;
+    		for(MessageNotification msg: m){
+    			emails.put(msg.getSender());
+    			messages.put(msg.getText());
+    			i++;
+    		}
+    		i = 0;
+    		
+    		JSONArray friendRequests = new JSONArray();
+//    		String friendRequests[] = new String[f.size()];
+    		for(FriendRequestNotification fr: f){
+    			friendRequests.put(fr.getSender());
+    		}    		
+    		obj.put("messages_emails", emails);
+    		obj.put("messages_text", messages);
+    		obj.put("friend_requests_emails", friendRequests);
     	}
     	return obj.toString();
     }
