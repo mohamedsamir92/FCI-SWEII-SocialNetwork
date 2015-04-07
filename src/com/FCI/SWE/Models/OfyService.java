@@ -12,6 +12,7 @@ public class OfyService {
 		ObjectifyService.register(UserEntity.class);
 		ObjectifyService.register(FriendRequest.class);
 		ObjectifyService.register(Friends.class);
+		ObjectifyService.register(Chat.class);
 	}
 	
 	public static Objectify ofy() {
