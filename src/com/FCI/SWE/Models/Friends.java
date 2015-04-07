@@ -13,7 +13,6 @@ public class Friends {
 	@Id Long id;
 	@Index String user_one ;
 	@Index String user_two;
-    private static Objectify ofy = OfyService.ofy();
 
 	/**
 	 * empty constructor
@@ -40,4 +39,19 @@ public class Friends {
      */
 	public String getUserTwo(){return user_two;}
 
+	public static boolean areFriends(String u1,String u2){
+		Friends obj = ofy().load().type(Friends.class).filter("user_one",u1)
+			.filter("user_two",u2).first().now();
+		if(obj != null)return true;
+
+		obj = ofy().load().type(Friends.class).filter("user_one",u2)
+		.filter("user_two",u1).first().now();
+		if(obj != null)return true;
+		
+		return false;
+	}
+	
+	
+	
+	
 }
