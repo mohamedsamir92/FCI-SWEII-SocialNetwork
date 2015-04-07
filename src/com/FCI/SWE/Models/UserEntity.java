@@ -148,6 +148,8 @@ public class UserEntity {
     	if (getUserByEMail(u1) == null || getUserByEMail(u2) == null) {
             return false;
         }
+    	if (Friends.areFriends(u1, u2))return false;
+    	if (FriendRequest.find(u1,u2))return false;
     	ofy().save().entity(new FriendRequest(u1,u2)).now();
         return true;
     }
