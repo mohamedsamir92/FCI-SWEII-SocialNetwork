@@ -32,7 +32,6 @@ public class ChatServices {
 		}
 			
 		return obj.toString();
-	}
-	
+	}	
 
 }

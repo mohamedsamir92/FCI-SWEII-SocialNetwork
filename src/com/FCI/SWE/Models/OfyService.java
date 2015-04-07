@@ -5,6 +5,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
+
 public class OfyService {
 	static {
 		ObjectifyService.register(PostsModel.class);
@@ -13,7 +14,7 @@ public class OfyService {
 		ObjectifyService.register(Friends.class);
 		ObjectifyService.register(Chat.class);
 	}
-
+	
 	public static Objectify ofy() {
 		return ObjectifyService.ofy();
 	}
