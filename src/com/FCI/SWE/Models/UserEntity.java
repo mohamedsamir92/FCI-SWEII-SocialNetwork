@@ -160,19 +160,17 @@ public class UserEntity {
      * @return true if added to friends false otherwise
      */
     public static boolean acceptFriendRequest(String u1, String u2) {
-    	FriendRequest f = (FriendRequest)ofy().load().type(FriendRequest.class)
-    			.filter("user_one",u1).filter("user_two",u2).first().now();
     	FriendRequest ff = (FriendRequest)ofy().load().type(FriendRequest.class)
     			.filter("user_two",u1).filter("user_one",u2).first().now();
     	
-        if (f == null && ff == null) {
+        if (ff == null) {
             return false;
         }
-        if(f != null)
-        	ofy().delete().entity(f);
         if(ff != null)
         	ofy().delete().entity(ff);
 
+        FriendRequestNotification.delete(u2,u1);
+        
         Friends nf = new Friends(u1,u2);
         ofy().save().entity(nf);
 

@@ -52,5 +52,6 @@ public class Chat {
 		if(obj == null)obj = new Chat(u1,u2);
 		obj.addMessage(new Messages(u1,u2,text));
 		obj.save();
+		new MessageNotification(u2,u1,text).save();
 	}
 }

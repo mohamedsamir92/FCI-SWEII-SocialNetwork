@@ -19,10 +19,10 @@ public class MessageNotification extends Notification{
 	
 	public MessageNotification(){}
 	
-	public MessageNotification(String r,String s,String t){
-		this.user_email = r;
-		this.sender_email = s;
-		this.text = t;
+	public MessageNotification(String receiver,String sender,String text){
+		this.user_email = receiver;
+		this.sender_email = sender;
+		this.text = text;
 		this.read = false;
 	}
 

@@ -10,13 +10,13 @@ import static com.FCI.SWE.Models.OfyService.ofy;
 
 @Entity
 public class FriendRequestNotification extends Notification{
-	@Index private String user_email;
-	private String sender;
+	@Index private String receiver;
+	@Index private String sender;
 	@Id private Long friendRequestNotiID;
 	
 	public FriendRequestNotification(){}
 	public FriendRequestNotification(String s,String r){
-		this.user_email = s;
+		this.receiver = s;
 		this.sender = r;
 	}
 
@@ -33,5 +33,14 @@ public class FriendRequestNotification extends Notification{
 	public String getSender(){
 		return this.sender;
 	}
-
+	
+	public static void delete(String sender,String receiver){
+		FriendRequestNotification f = 
+		ofy().load().type(FriendRequestNotification.class).
+				filter("receiver",receiver).filter("sender" , sender).
+				first().now();
+		if(f != null){
+			ofy().delete().entity(f);
+		}
+	}
 }
