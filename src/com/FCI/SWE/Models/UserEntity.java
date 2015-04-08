@@ -103,11 +103,10 @@ public class UserEntity {
      * @param pass user password
      * @return Constructed user entity
      */
-    public static UserEntity getUser(String name, String pass) {
-    	return ofy().load().type(UserEntity.class).
-        			filter("name",name).filter("password",pass).first().now();
-        
-
+    public static UserEntity getUser(String email, String pass) {
+    	UserEntity e = getUserByEMail(email);
+    	if(e.password.equals(pass))return e;
+    	return null;        
     }
 
     /**
@@ -127,7 +126,6 @@ public class UserEntity {
     public static UserEntity getUserByName(String name) {
         return ofy().load().type(UserEntity.class).
     			filter("name",name).first().now();
-
     }
 
     /**
@@ -150,7 +148,9 @@ public class UserEntity {
     	if (getUserByEMail(u1) == null || getUserByEMail(u2) == null) {
             return false;
         }
-    	ofy().save().entity(new FriendRequest(u1,u2));
+    	if (Friends.areFriends(u1, u2))return false;
+    	if (FriendRequest.find(u1,u2))return false;
+    	ofy().save().entity(new FriendRequest(u1,u2)).now();
         return true;
     }
     /**
@@ -160,19 +160,17 @@ public class UserEntity {
      * @return true if added to friends false otherwise
      */
     public static boolean acceptFriendRequest(String u1, String u2) {
-    	FriendRequest f = (FriendRequest)ofy().load().type(FriendRequest.class)
-    			.filter("user_one",u1).filter("user_two",u2).first().now();
     	FriendRequest ff = (FriendRequest)ofy().load().type(FriendRequest.class)
     			.filter("user_two",u1).filter("user_one",u2).first().now();
     	
-        if (f == null && ff == null) {
+        if (ff == null) {
             return false;
         }
-        if(f != null)
-        	ofy().delete().entity(f);
         if(ff != null)
         	ofy().delete().entity(ff);
 
+        FriendRequestNotification.delete(u2,u1);
+        
         Friends nf = new Friends(u1,u2);
         ofy().save().entity(nf);
 

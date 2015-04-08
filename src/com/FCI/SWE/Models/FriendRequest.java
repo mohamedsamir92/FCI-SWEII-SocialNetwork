@@ -37,6 +37,13 @@ public class FriendRequest {
 	 * @return user 2
 	 */
 	public String getUserTwo(){return user_two;}
-	
+
+	public static boolean find(String u1,String u2){
+		if(ofy().load().type(FriendRequest.class).filter("user_one",u1).
+				filter("user_two",u2).first().now() != null)return true;
+		if(ofy().load().type(FriendRequest.class).filter("user_one",u2).
+				filter("user_two",u1).first().now() != null)return true;
+		return false;
+	}
 	
 }
