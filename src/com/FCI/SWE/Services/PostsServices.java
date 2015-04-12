@@ -28,6 +28,7 @@ import org.json.simple.parser.ParseException;
 
 import com.FCI.SWE.Models.PostsModel;
 import com.FCI.SWE.Models.UserEntity;
+
 import static com.FCI.SWE.Models.OfyService.ofy;
 
 /**
@@ -77,6 +78,21 @@ public class PostsServices{
 		}
 
 		return obj.toString();
+	}
+	@POST
+	@Path("/userPost/")
+	public String userPost(@FormParam("email") String email,
+			@FormParam("password") String password,
+			@FormParam("text") String text,@FormParam("feeling") String feeling) {
+		JSONObject obj = new JSONObject();
+		UserEntity u = UserEntity.getUserByEMail(email);
+		if (u == null) {
+			obj.put(status, fail);
+		} else {
+			new PostsModel(email,text,feeling).save();
+			obj.put(status,ok);
+		}
+		return (String) obj.put(status,ok);
 	}
     
 }
