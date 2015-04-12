@@ -40,6 +40,7 @@ public class PostsModel{
     	text = t;
     	felling=f;
     }
+   
     /**
      * this method save the post to the datastore
      */
