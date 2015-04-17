@@ -64,7 +64,7 @@ public class PostsServices{
 	@Path("/writePost/")
 	public String writePost(@FormParam("email") String email,
 			@FormParam("password") String password,
-			@FormParam("text") String text) {
+			@FormParam("text") String text , @FormParam("privacy")String privacy) {
 
 		JSONObject obj = new JSONObject();
 
@@ -72,7 +72,7 @@ public class PostsServices{
 		if (u == null) {
 			obj.put(status, fail);
 		} else {
-			new PostsModel(email,text).save();
+			new PostsModel(email,text,privacy).save();
 			obj.put(status,ok);
 		}
 

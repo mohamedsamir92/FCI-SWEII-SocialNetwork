@@ -21,6 +21,7 @@ public class PostsModel{
 	@Id Long id;
 	@Index String owner_email;
 	String text;
+	String privacy;
 	/**
 	 * empty constructor 
 	 */
@@ -30,9 +31,10 @@ public class PostsModel{
      * @param owner
      * @param t
      */
-    public PostsModel(String owner,String t){
+    public PostsModel(String owner,String t,String p){
     	owner_email = owner;
     	text = t;
+    	privacy=p;
     }
     
     /**
