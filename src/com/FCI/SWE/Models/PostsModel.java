@@ -21,7 +21,7 @@ public class PostsModel{
 	@Id Long id;
 	@Index String owner_email;
 	String text;
-	
+	String felling;
 	/**
 	 * empty constructor 
 	 */
@@ -35,7 +35,12 @@ public class PostsModel{
     	owner_email = owner;
     	text = t;
     }
-    
+    public PostsModel(String owner,String t,String f){
+    	owner_email = owner;
+    	text = t;
+    	felling=f;
+    }
+   
     /**
      * this method save the post to the datastore
      */

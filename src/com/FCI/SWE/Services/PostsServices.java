@@ -26,8 +26,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.FCI.SWE.Models.Chat;
+import com.FCI.SWE.Models.Friends;
 import com.FCI.SWE.Models.PostsModel;
 import com.FCI.SWE.Models.UserEntity;
+
 import static com.FCI.SWE.Models.OfyService.ofy;
 
 /**
@@ -63,22 +66,36 @@ public class PostsServices{
 	 */
 	@POST
 	@Path("/writePost/")
-	public String writePost(@FormParam("email") String email,
-			@FormParam("password") String password,
+
+	public String writePost(@FormParam("sender") String sender,
+			@FormParam("receiver") String receiver,
 			@FormParam("text") String text) {
-
+		
 		JSONObject obj = new JSONObject();
-
+		if(!Friends.areFriends(sender, receiver)){
+			obj.put(status , fail);
+		}else{
+			new PostsModel(receiver,text).save();
+			obj.put(status,ok);
+		}
+		return obj.toString();
+	}
+	@POST
+	@Path("/userPost/")
+	public String userPost(@FormParam("email") String email,
+			@FormParam("password") String password,
+			@FormParam("text") String text,@FormParam("feeling") String feeling) {
+		JSONObject obj = new JSONObject();
 		UserEntity u = UserEntity.getUserByEMail(email);
 		if (u == null) {
 			obj.put(status, fail);
 		} else {
-			new PostsModel(email,text).save();
+			new PostsModel(email,text,feeling).save();
 			obj.put(status,ok);
 		}
-
-		return obj.toString();
+		return (String) obj.put(status,ok);
 	}
+
     public void sharePost (@FormParam("email") String email,
 			@FormParam("password") String password,
 			@FormParam("text") String text){
@@ -88,4 +105,5 @@ public class PostsServices{
 			
 		}
     }
+
 }
