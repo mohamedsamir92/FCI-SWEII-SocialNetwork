@@ -21,6 +21,7 @@ public class PostsModel{
 	@Id Long id;
 	@Index String owner_email;
 	String text;
+	
 	/**
 	 * empty constructor 
 	 */

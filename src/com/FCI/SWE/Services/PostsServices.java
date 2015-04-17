@@ -43,6 +43,7 @@ import static com.FCI.SWE.Models.OfyService.ofy;
 @Produces(MediaType.TEXT_PLAIN)
 public class PostsServices{
 	
+	static public ArrayList<String>wall = new ArrayList<>();
 	static private String status = "Status";
 	static private String ok = "OK";
 	static private String fail = "Failed";
@@ -78,5 +79,13 @@ public class PostsServices{
 
 		return obj.toString();
 	}
-    
+    public void sharePost (@FormParam("email") String email,
+			@FormParam("password") String password,
+			@FormParam("text") String text){
+    	UserEntity u = UserEntity.getUserByEMail(email);
+		if (u != null) {
+			wall.add(text);
+			
+		}
+    }
 }
