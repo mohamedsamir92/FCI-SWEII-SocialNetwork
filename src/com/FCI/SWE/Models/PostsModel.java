@@ -21,6 +21,8 @@ public class PostsModel{
 	@Id Long id;
 	@Index String owner_email;
 	String text;
+	String felling;
+	String privacy;//public or friends or custom
 	/**
 	 * empty constructor 
 	 */
@@ -34,7 +36,13 @@ public class PostsModel{
     	owner_email = owner;
     	text = t;
     }
-    
+    public PostsModel(String owner,String t,String f,String p){
+    	owner_email = owner;
+    	text = t;
+    	felling=f;
+    	privacy=p;
+    }
+   
     /**
      * this method save the post to the datastore
      */
