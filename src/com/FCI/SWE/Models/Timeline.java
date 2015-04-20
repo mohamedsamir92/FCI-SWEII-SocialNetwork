@@ -11,10 +11,22 @@ import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class Timeline {
-	@Id Long id;	
+	@Id private Long id;	
 //	ArrayList<Post> allPosts;
-	public Timeline getTimelineByID(Long id){
+	
+	public Timeline(){
+		
+	}
+	public Long save(){
+		ofy().save().entity(this).now();
+		return id;
+	}
+	public Long getID(){
+		return id;
+	}
+	static public Timeline getTimelineByID(Long id){
 		return ofy().load().type(Timeline.class).
 				filter("id",id).first().now();	
 	}
+	
 }
