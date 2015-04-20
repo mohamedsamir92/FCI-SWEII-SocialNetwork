@@ -15,6 +15,7 @@ public class OfyService {
 		ObjectifyService.register(FriendRequestNotification.class);
 		ObjectifyService.register(MessageNotification.class);
 		ObjectifyService.register(Chat.class);
+		ObjectifyService.register(Timeline.class);
 	}
 	
 	public static Objectify ofy() {
