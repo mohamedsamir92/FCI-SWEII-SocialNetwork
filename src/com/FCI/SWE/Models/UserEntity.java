@@ -30,8 +30,6 @@ public class UserEntity {
 	@Id private static  String email;
     @Index private String name;
     private String password;
-    private ArrayList<UserEntity> friends = new ArrayList();
-    private ArrayList<PostsModel> allowedPosts =new ArrayList();
     
     public UserEntity(){}
     /**
@@ -48,9 +46,6 @@ public class UserEntity {
 
     }
  
-    public void SetAllowedPost(PostsModel post){
-    	allowedPosts.add(post);
-    }
     /**
      * this method gets user name
      * @return name
@@ -179,33 +174,11 @@ public class UserEntity {
 
         return true;
     }
-    /**
-     * this method indicate that user can show specific posts or not
-     * @author ranya
-     * 
-     */
-  /*  public static boolean postsVisiablity(boolean b){
-    	return b;
-    }*/
+    
     public static String getUserEmail(){
     	return UserEntity.email;
     }
-    /**
-     * this method get all friends of specific user
-     *  @author ranya
-     */
-    public ArrayList<UserEntity> getUserFreinds(){
-    	 ArrayList<UserEntity> users = new ArrayList();
-    	 //return all users in social media
-    	users.addAll(ofy().load().type(UserEntity.class).list());
-    	//to list all friends of current user
-    	for(int i=0;i<users.size();i++){
-    		if(Friends.areFriends(UserEntity.email, users.get(i).email)){
-    			friends.add(users.get(i));
-    		}
-    	}
-		return friends;
-    	
-    }
+   
+  
 
 }

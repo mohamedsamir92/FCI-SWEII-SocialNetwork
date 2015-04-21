@@ -20,8 +20,6 @@ import static com.FCI.SWE.Models.OfyService.ofy;
 public abstract class PostsModel{
 	@Id protected Long id;
 	protected String text;
-	protected String felling;
-	protected int privacy;
 	/**
 	 * empty constructor 
 	 */
@@ -31,25 +29,9 @@ public abstract class PostsModel{
      * @param owner
      * @param t
      */
-    public PostsModel(String t,int p){
+    public PostsModel(String t){
     	text = t;
-    	privacy =p;
-    }
-    public PostsModel(String t,String f ,int p){
-    	text = t;
-    	felling=f;
-    	privacy =p;
-    	
     }
    
-    public void setPrivacy(int p){
-    	privacy =p;
-    }
-    /**
-     * this method save the post to the datastore
-     */
-    public void save(){
-    	ofy().save().entity(this);
-    }
     
 }
