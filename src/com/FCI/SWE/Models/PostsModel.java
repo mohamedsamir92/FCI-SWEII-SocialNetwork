@@ -16,9 +16,8 @@ import com.googlecode.objectify.annotation.*;
 import static com.FCI.SWE.Models.OfyService.ofy;
 
 
-@Entity
 public abstract class PostsModel{
-	@Id protected Long id;
+	
 	protected String text;
 	/**
 	 * empty constructor 
