@@ -19,6 +19,7 @@ import static com.FCI.SWE.Models.OfyService.ofy;
 public abstract class PostsModel{
 	
 	protected String text;
+
 	/**
 	 * empty constructor 
 	 */
@@ -28,7 +29,9 @@ public abstract class PostsModel{
      * @param owner
      * @param t
      */
+
     public PostsModel(String t){
+
     	text = t;
     }
    

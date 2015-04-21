@@ -65,6 +65,12 @@ public class PostsServices{
 	 */
 	@POST
 	@Path("/writePost/")
+<<<<<<< HEAD
+=======
+	public String writePost(@FormParam("email") String email,
+			@FormParam("password") String password,
+			@FormParam("text") String text , @FormParam("privacy")String privacy) {
+>>>>>>> master
 
 	public String writePost(@FormParam("sender") String sender,
 			@FormParam("receiver") String receiver,
@@ -97,7 +103,11 @@ public class PostsServices{
 		if (u == null) {
 			obj.put(status, fail);
 		} else {
+<<<<<<< HEAD
 			new PostsModel(email,text,feeling).save();
+=======
+			new PostsModel(email,text,privacy).save();
+>>>>>>> master
 			obj.put(status,ok);
 		}
 		return (String) obj.put(status,ok);
