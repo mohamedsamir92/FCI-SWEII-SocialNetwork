@@ -27,11 +27,10 @@ import static com.FCI.SWE.Models.OfyService.ofy;
 
 @Entity
 public class UserEntity {
-	@Id private String email;
+	@Id private static  String email;
     @Index private String name;
     @Index private Long timelineID;
     private String password;
-
     
     public UserEntity(){
     	
@@ -49,8 +48,7 @@ public class UserEntity {
         this.email = email;
         this.password = password;
     }
-    
-    
+
     /**
      * this method gets user name
      * @return name
@@ -166,5 +164,11 @@ public class UserEntity {
 
         return true;
     }
+    
+    public static String getUserEmail(){
+    	return UserEntity.email;
+    }
+   
+  
 
 }

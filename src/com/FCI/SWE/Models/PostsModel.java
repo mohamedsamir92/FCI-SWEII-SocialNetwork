@@ -16,11 +16,10 @@ import com.googlecode.objectify.annotation.*;
 import static com.FCI.SWE.Models.OfyService.ofy;
 
 
-@Entity
-public class PostsModel{
-	@Id Long id;
-	@Index String owner_email;
-	String text;
+public abstract class PostsModel{
+	
+	protected String text;
+
 	/**
 	 * empty constructor 
 	 */
@@ -30,16 +29,11 @@ public class PostsModel{
      * @param owner
      * @param t
      */
-    public PostsModel(String owner,String t){
-    	owner_email = owner;
+
+    public PostsModel(String t){
+
     	text = t;
     }
-    
-    /**
-     * this method save the post to the datastore
-     */
-    public void save(){
-    	ofy().save().entity(this);
-    }
+   
     
 }
