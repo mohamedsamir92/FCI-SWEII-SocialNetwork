@@ -86,10 +86,18 @@ public class PostsServices{
 			@FormParam("text") String text,@FormParam("feeling") String feeling,@FormParam("privacy")String privacy) {
 		JSONObject obj = new JSONObject();
 		UserEntity u = UserEntity.getUserByEMail(email);
+		ArrayList<UserEntity> allowedUsers =null;
+		if(privacy=="Friends"){
+			//loop all friends of user and add post to the
+		    allowedUsers = u.getUserFreinds();
+			for(int i=0;i<allowedUsers.size();i++){
+				allowedUsers.get(i).SetAllowedPost(new PostsModel(email,text));
+			}
+		}
 		if (u == null) {
 			obj.put(status, fail);
 		} else {
-			new PostsModel(email,text,feeling,privacy).save();
+			new PostsModel(email,text,feeling).save();
 			obj.put(status,ok);
 		}
 		return (String) obj.put(status,ok);

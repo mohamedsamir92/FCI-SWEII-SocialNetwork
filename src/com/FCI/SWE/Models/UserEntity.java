@@ -31,7 +31,7 @@ public class UserEntity {
     @Index private String name;
     private String password;
     private ArrayList<UserEntity> friends = new ArrayList();
-
+    private ArrayList<PostsModel> allowedPosts =new ArrayList();
     
     public UserEntity(){}
     /**
@@ -47,8 +47,10 @@ public class UserEntity {
         this.password = password;
 
     }
-
-    
+ 
+    public void SetAllowedPost(PostsModel post){
+    	allowedPosts.add(post);
+    }
     /**
      * this method gets user name
      * @return name
@@ -182,9 +184,9 @@ public class UserEntity {
      * @author ranya
      * 
      */
-    public static boolean showPost(boolean s){
-    	return s;
-    }
+  /*  public static boolean postsVisiablity(boolean b){
+    	return b;
+    }*/
     public static String getUserEmail(){
     	return UserEntity.email;
     }

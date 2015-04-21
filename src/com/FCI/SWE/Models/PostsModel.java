@@ -17,12 +17,11 @@ import static com.FCI.SWE.Models.OfyService.ofy;
 
 
 @Entity
-public class PostsModel{
-	@Id Long id;
-	@Index String owner_email;
-	String text;
-	String felling;
-	String privacy;//public or friends or custom
+public abstract class PostsModel{
+	@Id protected Long id;
+	protected String text;
+	protected String felling;
+	protected int privacy;
 	/**
 	 * empty constructor 
 	 */
@@ -32,17 +31,20 @@ public class PostsModel{
      * @param owner
      * @param t
      */
-    public PostsModel(String owner,String t){
-    	owner_email = owner;
+    public PostsModel(String t,int p){
     	text = t;
+    	privacy =p;
     }
-    public PostsModel(String owner,String t,String f,String p){
-    	owner_email = owner;
+    public PostsModel(String t,String f ,int p){
     	text = t;
     	felling=f;
-    	privacy=p;
+    	privacy =p;
+    	
     }
    
+    public void setPrivacy(int p){
+    	privacy =p;
+    }
     /**
      * this method save the post to the datastore
      */
