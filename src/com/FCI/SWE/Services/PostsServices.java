@@ -96,7 +96,7 @@ public class PostsServices{
 		return (String) obj.put(status,ok);
 	}
 
-    public void sharePost (@FormParam("email") String email,
+   /* public void sharePost (@FormParam("email") String email,
 			@FormParam("password") String password,
 			@FormParam("text") String text){
     	UserEntity u = UserEntity.getUserByEMail(email);
@@ -104,6 +104,6 @@ public class PostsServices{
 			wall.add(text);
 			
 		}
-    }
+    }*/
 
 }
