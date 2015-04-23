@@ -31,9 +31,8 @@ public abstract class PostsModel{
      */
 
     public PostsModel(String t){
-
     	text = t;
     }
-   
+
     
 }
