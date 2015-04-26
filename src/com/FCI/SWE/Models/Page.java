@@ -13,10 +13,8 @@ public class Page {
 	String type;
 	String category;
 	String ownerEmail;
-	@Id
-	long PageID;
-	Timeline pTimeline;
-	long timelineID;
+	public @Id long PageID;
+	public long timelineID;
 	int fans;
 	ArrayList<String> fansMails;
 
@@ -25,16 +23,18 @@ public class Page {
 		type = t;
 		category = c;
 		ownerEmail = o;
-		pTimeline = new Timeline();
 		fans = 0;
 		fansMails = new ArrayList<>();
-		timelineID = pTimeline.getID();
+		timelineID = new Timeline().getID();
 	}
 
 	public void save() {
 		ofy().save().entity(this);
 	}
 
+	public static Page SearchPageByID(long pId) {
+		return ofy().load().type(Page.class).id(pId).now();
+	}
 	public static Page SearchPageByName(String name) {
 		return ofy().load().type(Page.class).filter("name",name).first().now();
 	}

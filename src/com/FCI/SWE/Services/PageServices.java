@@ -1,13 +1,15 @@
 package com.FCI.SWE.Services;
 
+import com.FCI.SWE.Models.PagePost;
+import com.FCI.SWE.Models.Timeline;
+import com.FCI.SWE.Models.Page;
+import com.FCI.SWE.Models.UserEntity;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 import org.json.simple.JSONObject;
-
-import com.FCI.SWE.Models.Page;
-import com.FCI.SWE.Models.UserEntity;
 
 @Path("/pages/")
 public class PageServices {
@@ -15,6 +17,9 @@ public class PageServices {
 	private String ok = "OK";
 	private String failed = "Failed";
 
+	/*
+	 * 
+	 */
 	@POST
 	@Path("/createPage/")
 	public String writePost(@FormParam("email") String email,
@@ -51,6 +56,24 @@ public class PageServices {
 				p.addFan(email);
 				obj.put(status, ok);
 			}
+		}
+		return obj.toString();
+	}
+
+	@POST
+	@Path("/writePost/")
+	public String writePost(@FormParam("page name") String name,
+			@FormParam("post") String post) {
+		JSONObject obj = new JSONObject();
+
+		Page p = Page.SearchPageByName(name);
+		if (p == null) {
+			obj.put(status, failed);
+		} else {
+			PagePost pageP=new PagePost(p.PageID, post);
+			Timeline t=Timeline.getTimelineByID(p.timelineID);
+			//t.addPost(pageP);
+			obj.put(status, ok);
 		}
 		return obj.toString();
 	}

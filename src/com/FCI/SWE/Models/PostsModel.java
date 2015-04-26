@@ -15,25 +15,26 @@ import com.googlecode.objectify.annotation.*;
 
 import static com.FCI.SWE.Models.OfyService.ofy;
 
+public abstract class PostsModel {
 
-public abstract class PostsModel{
-	
 	protected String text;
+	
+	/**
+	 * empty constructor
+	 */
+	public PostsModel() {
+	}
 
 	/**
-	 * empty constructor 
+	 * constructor takes the owner and string text for a post
+	 * 
+	 * @param owner
+	 * @param t
 	 */
-    public PostsModel(){}
-    /**
-     * constructor takes the owner and string text for a post
-     * @param owner
-     * @param t
-     */
 
-    public PostsModel(String t){
+	public PostsModel(String t) {
 
-    	text = t;
-    }
-   
-    
+		text = t;
+	}
+
 }
