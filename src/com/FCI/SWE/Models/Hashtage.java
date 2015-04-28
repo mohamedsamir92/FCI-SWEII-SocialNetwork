@@ -7,6 +7,9 @@ import com.FCI.SWE.Models.*;
 import java.io.*;
 import java.util.ArrayList;
 
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
 public class Hashtage {
 	
 	public PostsModel post = new PostsModel();
@@ -18,6 +21,9 @@ public class Hashtage {
 	
 	public int startIndex = 0;
 	public int endIndex = 0;
+	
+	@POST
+	@Path("/writeHashtage/")
 	
 	public void hashPost (){
 		 startIndex = textt.indexOf('#');{
