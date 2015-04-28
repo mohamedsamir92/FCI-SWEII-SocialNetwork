@@ -30,7 +30,7 @@ public class UserEntity {
 	@Id private String email;
     @Index private String name;
     private String password;
-
+    public ArrayList<String> postShared = new ArrayList<String> ();
     
     public UserEntity(){}
     /**
@@ -40,7 +40,7 @@ public class UserEntity {
      * @param email user email
      * @param password user provided password
      */
-    public UserEntity(String name, String email, String password) {
+    public UserEntity(String name, String email, String password ) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -70,7 +70,7 @@ public class UserEntity {
     public String getPass() {
         return password;
     }
-
+    
     /**
      *
      * This static method will form UserEntity class using json format contains

@@ -46,7 +46,7 @@ public class PostsServices{
 	static private String status = "Status";
 	static private String ok = "OK";
 	static private String fail = "Failed";
-
+	
 	
 	/*
 	 * @author Fahmy
@@ -79,4 +79,12 @@ public class PostsServices{
 		return obj.toString();
 	}
     
+	@POST
+	@Path("/sharePost/")
+	public void SharePost (@FormParam("email") String email,
+			@FormParam("password") String password,
+			@FormParam("text") String text){
+		UserEntity u = new UserEntity ();
+		u.postShared.add(text);
+	}
 }
