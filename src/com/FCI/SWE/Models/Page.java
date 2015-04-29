@@ -6,42 +6,58 @@ import java.util.ArrayList;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
+/**
+ * This class is responsible for representing the Page model
+ * @author Esraa
+ *
+ */
 @Entity
 public class Page {
-	String name;
-	String type;
-	String category;
-	String ownerEmail;
-	public @Id long PageID;
-	public long timelineID;
-	int fans;
-	ArrayList<String> fansMails;
+	@Id    private Long id;
+	@Index private String name;
+	@Index private String type;
+	@Index private String category;
+	@Index private String ownerEmail;
+	@Index private long timelineID;
+	@Index private int numberOfLikes;
+		   private ArrayList<String> fansEMails;
 
-	public Page(String n, String t, String c, String o) {
-		name = n;
-		type = t;
-		category = c;
-		ownerEmail = o;
-		fans = 0;
-		fansMails = new ArrayList<>();
-		timelineID = new Timeline().getID();
+    public Page(){
+    	numberOfLikes = 0;
+    	fansEMails = new ArrayList<String>();
+    }
+	public Page(String pageName, String pageType, String pageCategory, String ownerEmail) {
+		name = pageName;
+		type = pageType;
+		category = pageCategory;
+		this.ownerEmail = ownerEmail;
+		numberOfLikes = 0;
+		fansEMails = new ArrayList<>();
+		timelineID = new Timeline().save();
 	}
 
-	public void save() {
-		ofy().save().entity(this);
-	}
-
-	public static Page SearchPageByID(long pId) {
+	public static Page SearchPageByID(Long pId) {
 		return ofy().load().type(Page.class).id(pId).now();
 	}
 	public static Page SearchPageByName(String name) {
 		return ofy().load().type(Page.class).filter("name",name).first().now();
 	}
-
-	public void addFan(String fmail) {
-		this.fans++;
-		this.fansMails.add(fmail);
+	
+	public Long save() {
+		ofy().save().entity(this);
+		return id;
+	}
+	public Timeline getPageTimeline(){
+		return Timeline.getTimelineByID(timelineID);
+	}
+	public UserEntity getOwner(){
+		return UserEntity.getUserByEMail(ownerEmail);
+	}
+	public void addFan(String fanEMail) {
+		numberOfLikes++;
+		fansEMails.add(fanEMail);
 	}
 
 }
