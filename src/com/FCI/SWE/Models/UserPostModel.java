@@ -21,7 +21,7 @@ public class UserPostModel extends PostsModel{
 	@Index private String ownerEMail;
 	@Index private Long timelineId;
 	       private String feeling;
-	       private String privacy;
+	       private int privacy;
 	
    	public UserPostModel(){}
 	
@@ -29,13 +29,13 @@ public class UserPostModel extends PostsModel{
 		super(text);
 		this.ownerEMail = ownerEMail;
 		this.timelineId = timelineId;
-		this.privacy = "public";
+		this.privacy = postPrivacy.PUBLIC;
 	}
 	
 	public void setFeeling(String s){
 		feeling = s;
 	}
-	public void setPrivacy(String p){
+	public void setPrivacy(int p){
 		privacy = p;
 	}
 	public Long getTimelineId(){

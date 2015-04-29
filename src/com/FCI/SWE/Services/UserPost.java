@@ -42,7 +42,8 @@ public class UserPost extends PostsModel {
 			if(feeling != null)
 				p.setFeeling(feeling);
 			if(privacy != null)
-				p.setPrivacy(privacy);
+				p.setPrivacy(Integer.valueOf(privacy));
+			
 			p.save();
 			obj.put(status, ok);
 		}
