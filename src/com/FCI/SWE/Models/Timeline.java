@@ -12,10 +12,18 @@ import com.googlecode.objectify.annotation.Index;
 @Entity
 public class Timeline {
 	@Id private Long id;	
-//	ArrayList<Post> allPosts;
+	ArrayList<Long> allPosts;
 	
 	public Timeline(){
 		
+	}
+	public static Timeline getTimelineByID(Long id){
+		return ofy().load().type(Timeline.class).
+				filter("id",id).first().now();	
+	}
+	
+	public void addPost(Long l){
+		allPosts.add(l);
 	}
 	public Long save(){
 		ofy().save().entity(this).now();
@@ -23,10 +31,6 @@ public class Timeline {
 	}
 	public Long getID(){
 		return id;
-	}
-	static public Timeline getTimelineByID(Long id){
-		return ofy().load().type(Timeline.class).
-				filter("id",id).first().now();	
 	}
 	
 }

@@ -11,21 +11,33 @@ import javax.ws.rs.Path;
 
 import org.json.simple.JSONObject;
 
-@Path("/pages/")
+/**
+ * This class is responsible for the services of pages
+ * its relative url is /rest/pages/
+ * 
+ * @author Esraa
+ *
+ */
+@Path("/pages")
 public class PageServices {
 	private String status = "Status";
 	private String ok = "OK";
 	private String failed = "Failed";
 
-	/*
+	/**
 	 * 
+	 * @param email
+	 * @param pName
+	 * @param pCateogry
+	 * @param pType
+	 * @return
 	 */
 	@POST
 	@Path("/createPage/")
-	public String writePost(@FormParam("email") String email,
-			@FormParam("page name") String pName,
-			@FormParam("page category") String pCateogry,
-			@FormParam("page type") String pType) {
+	public String createPage(@FormParam("email") String email,
+			@FormParam("page_name") String pName,
+			@FormParam("page_category") String pCateogry,
+			@FormParam("page_type") String pType) {
 
 		JSONObject obj = new JSONObject();
 
@@ -39,40 +51,47 @@ public class PageServices {
 		return obj.toString();
 	}
 
+	/**
+	 * 
+	 * @param email
+	 * @param pId
+	 * @return
+	 */
 	@POST
 	@Path("/likePage")
 	public String likePage(@FormParam("email") String email,
-			@FormParam("page name") String pName) {
+						   @FormParam("page_id") Long pId) {
 		JSONObject obj = new JSONObject();
 
 		UserEntity u = UserEntity.getUserByEMail(email);
-		Page p = Page.SearchPageByName(pName);
-		if (u == null) {
+		Page p = Page.SearchPageByID(pId);
+		if (u == null || p == null) {
 			obj.put(status, failed);
 		} else {
-			if (p == null) {
-				obj.put(status, failed);
-			} else {
-				p.addFan(email);
-				obj.put(status, ok);
-			}
+			obj.put(status, ok);
+			p.addFan(email);
+			p.save();
 		}
 		return obj.toString();
 	}
 
 	@POST
 	@Path("/writePost/")
-	public String writePost(@FormParam("page name") String name,
-			@FormParam("post") String post) {
+	public String writePost(@FormParam("email") String email,
+							@FormParam("page_id") Long pId,
+							@FormParam("post") String post) {
 		JSONObject obj = new JSONObject();
-
-		Page p = Page.SearchPageByName(name);
-		if (p == null) {
+		
+		Page p = Page.SearchPageByID(pId);
+		UserEntity u = p.getOwner();
+		if (p == null || u == null || false==u.getEmail().equals(email)) {
 			obj.put(status, failed);
 		} else {
-			PagePost pageP=new PagePost(p.PageID, post);
-			Timeline t=Timeline.getTimelineByID(p.timelineID);
-			//t.addPost(pageP);
+			Timeline t = p.getPageTimeline();
+			PagePost pageP = new PagePost(post,t.getID());
+			pageP.save();
+			t.addPost(pageP.getId());
+			t.save();
 			obj.put(status, ok);
 		}
 		return obj.toString();

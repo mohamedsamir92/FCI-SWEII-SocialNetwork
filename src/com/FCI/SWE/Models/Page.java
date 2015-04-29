@@ -49,6 +49,9 @@ public class Page {
 		ofy().save().entity(this);
 		return id;
 	}
+	public Long getTimelineId(){
+		return timelineID;
+	}
 	public Timeline getPageTimeline(){
 		return Timeline.getTimelineByID(timelineID);
 	}
