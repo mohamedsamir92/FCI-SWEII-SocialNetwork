@@ -20,10 +20,8 @@ public abstract class PostsModel {
 	 * 
 	 * @param t
 	 */
-
 	public PostsModel(String t) {
 
 		text = t;
 	}
-
 }
