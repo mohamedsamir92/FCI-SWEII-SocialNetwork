@@ -16,6 +16,9 @@ public class OfyService {
 		ObjectifyService.register(MessageNotification.class);
 		ObjectifyService.register(Chat.class);
 		ObjectifyService.register(Timeline.class);
+		ObjectifyService.register(Page.class);
+		ObjectifyService.register(PagePost.class);
+		ObjectifyService.register(UserPostModel.class);
 	}
 	
 	public static Objectify ofy() {
