@@ -23,10 +23,12 @@ public class ChatServices {
 						@FormParam("receiver")String receiver,
 						@FormParam("text")String text){
 		JSONObject obj = new JSONObject();
-		
+		//if not friends put status failed
 		if(!Friends.areFriends(sender, receiver)){
 			obj.put(status , failed);
-		}else{
+		}
+		//if friends send the message and put status ok 
+		else{
 			Chat.send(sender,receiver,text);
 			obj.put(status, ok);
 		}
